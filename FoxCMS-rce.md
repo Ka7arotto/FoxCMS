@@ -1,4 +1,4 @@
-### Remote File Download Race Condition RCE
+### Remote File Download to RCE
 
 In the "Company Profile" section, add an image -> choose "Extract Image from URL" and input the VPS file address for download:
 ```r
