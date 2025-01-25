@@ -73,7 +73,7 @@ public function download($url = "", $filename = "", $path = "")
 ```
 In `download`, the filename is obtained from the URL request, and there is no filtering, so a PHP file can be downloaded, and the file is directly written using `file_put_contents`.
 
-As shown in the debugging output, the content of the file is the remote file's content, and the written file is `1.php`.
+As shown in the debugging output, the content of the file is the remote file's content, and the written file is `1.php`.As follows, you can see that content is the content of the remote file, and the file written is the 1.php, and the default write path is 'uploads/date("Ymd")/', you only need to know the upload date
 ![](./public/1.png)
 
 
