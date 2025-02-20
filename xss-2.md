@@ -1,7 +1,7 @@
 ## FoxCMS v1.2.5 XSS Vulnerability
 
 ### Vulnerability Description
-The latest version of FoxCMS v1.2.5 contains an XSS vulnerability in the image upload feature. This vulnerability arises due to insufficient input validation and sanitization, allowing an attacker to inject arbitrary JavaScript code. The injected code will execute when other users view the file.
+The latest version of FoxCMS v1.2.5 contains an XSS vulnerability in the Security management functions. This vulnerability arises due to insufficient input validation and sanitization, allowing an attacker to inject arbitrary JavaScript code. The injected code will execute when other users view the file.
 
 FoxCMS is an open-source content management system (CMS) based on PHP+MySQL architecture. It includes common content models like single pages, articles, products, galleries, videos, feedback, downloads, etc. It also features rich template tags, SEO optimization, and static URL support. No advanced programming skills are needed, and it allows for quick building of diverse applications for efficient content management. The system supports multi-language support, form design, visitor statistics, message notifications, cloud storage services, etc.
 
