@@ -1,7 +1,7 @@
 ## FoxCMS v1.2.5 XSS Vulnerability
 
 ### Vulnerability Description
-The latest version of FoxCMS v1.2.5 contains an XSS vulnerability in the Security management functions. This vulnerability arises due to insufficient input validation and sanitization, allowing an attacker to inject arbitrary JavaScript code. The injected code will execute when other users view the file.
+The latest version of FoxCMS v1.2.5 contains an XSS vulnerability in the image upload feature. This vulnerability arises due to insufficient input validation and sanitization, allowing an attacker to inject arbitrary JavaScript code. The injected code will execute when other users view the file.
 
 FoxCMS is an open-source content management system (CMS) based on PHP+MySQL architecture. It includes common content models like single pages, articles, products, galleries, videos, feedback, downloads, etc. It also features rich template tags, SEO optimization, and static URL support. No advanced programming skills are needed, and it allows for quick building of diverse applications for efficient content management. The system supports multi-language support, form design, visitor statistics, message notifications, cloud storage services, etc.
 
@@ -11,15 +11,15 @@ Official Website: [FoxCMS](https://www.foxcms.cn/)
 ![](./public/a-1.png)
 
 ### White-box Audit
-The vulnerable code is in `app\admin\controller\Safe.php`:
+The vulnerable code is in `app\admin\controller\Safe.php`
 ```php
     public function saveBlack(){
-        // Query IP blacklist
+        // Query blacklist IPs
         $param = $this->request->post();
         if(!array_key_exists("blacklists", $param)){
-            $this->error("The blacklist data does not exist");
+            $this->error("Blacklist data does not exist");
             if(empty(trim($param['blacklists']))){
-                $this->error("The blacklist data cannot be empty");
+                $this->error("Blacklist data cannot be empty");
             }
         }
         $blacklist = explode("\n", trim($param['blacklists']));
@@ -43,24 +43,28 @@ The vulnerable code is in `app\admin\controller\Safe.php`:
             }
             $this->success('Save successful');
         }else{
-            $this->error("Blacklist IP already exists");
+            $this->error("IP already exists in the blacklist");
         }
     }
 ```
 
-Debugging revealed that the input IP parameter is not filtered and is directly used in the `saveAll` storage call.
-![](public/c-1.png)
+During debugging, it was found that the input IP parameters are not filtered and are directly passed to `saveAll` for storage.
 
-When accessing the query, debugging finally reaches the HTML, where it is directly inserted into the page, causing an XSS vulnerability.
-![](public/c-2.png)
+![](./public/b-1.png)
 
-### Vulnerability Exploit
+When accessing the query, debugging eventually led to HTML being inserted directly into the page, causing the XSS vulnerability.
 
-In the backend system's security management, add the following IP blacklist with the payload:
+![](./public/b-2.png)
+
+### Vulnerability Exploitation
+
+When adding an IP to the blacklist in the backend system's security management, an attacker can insert the following payload:
 ```html
 <script>alert(/xss/)</script>
 ```
-![](public/c-3.png)
 
-Then, clicking on the security management function triggers the XSS popup.
-![](public/c-4.png)
+![](./public/b-3.png)
+
+When the security management feature is clicked, the XSS payload is triggered.
+
+![](./public/b-4.png)
